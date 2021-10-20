@@ -91,16 +91,16 @@
         getchart();
 
         async function getchart(param="ACC") {
-            console.log(param)
+            // console.log(param)
             let stockName = param.toUpperCase()
             let result = await getdata();
-            console.log(date);
+            // console.log(date);
             var ctx = document.getElementById('myChart').getContext('2d');
             if(myChart){
 
                 // myChart.clear();
             }
-            console.log(myChart)
+            // console.log(myChart)
              myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -146,7 +146,7 @@
             
             data = data.replace("\r",'')
             const table = data.split('\n');
-            console.log(table)
+            // console.log(table)
             const date1 = table[0];
             
 
@@ -155,7 +155,7 @@
             for(var key in table){
                 
                 tableData = table[key].split(",")
-                console.log(tableData[tableData.length-1])
+                // console.log(tableData[tableData.length-1])
                 // tableData = tableData[tableData.length-1].replace("/r","")
                 if(!dataFormat[tableData[0]]){
                     dataFormat[tableData[0]] = []
@@ -166,7 +166,7 @@
                 //     dataFormat[tableData[0]].push(tableData)
                 // }
             }
-            console.log(dataFormat);
+            // console.log(dataFormat);
             date2.splice(0, 1);
             
             return dataFormat;
