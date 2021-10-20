@@ -10,8 +10,9 @@
 </head>
 <style>
     .navbar {
-        background-color: black;
+        background-color: rgb(253, 251, 251);
         border-radius: 30px;
+        text-align: center;
 
     }
 
@@ -61,29 +62,25 @@
 <body>
     <header>
         <nav class="navbar">
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact us</a></li>
-                <div class="search">
-                    <input type="text" name="search" id="search" placeholder="Search this share">
-                    <button class="go" onclick="searchStocks()">go</button>
-                </div>
-
-            </ul>
+         <h1>Put Call Ratio Data </h1>
         </nav>
+        <div class="search">
+            <input type="text" name="search" id="search" placeholder="Search this share">
+            <button class="go" onclick="searchStocks()">go</button>
+        </div>
     </header>
+    
+    <canvas id="myChart" width="100%" height="80vh">Your browser does not support the canvas element.</canvas>
 
-    <canvas id="myChart" width="200" height="80"></canvas>
+    
     <script>
         async function searchStocks(){
             let inputValue = document.getElementById("search").value
             document.getElementById( "myChart" ).remove();     
             let canvas = document.createElement('canvas');     
             canvas.setAttribute('id','myChart');    
-            canvas.setAttribute('width','200');     
-            canvas.setAttribute('height','80');
+            canvas.setAttribute('width','100%');     
+            canvas.setAttribute('height','80vh');
             document.querySelector('body').appendChild(canvas);
             getchart(inputValue)
         }
