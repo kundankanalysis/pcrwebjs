@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pcr</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+</head>
+<style>
+    .navbar {
+        background-color: black;
+        border-radius: 30px;
+
+    }
+
+    .navbar ul {
+        overflow: auto;
+    }
+
+    .navbar li {
+        float: left;
+        list-style: none;
+        margin: 13px 20px;
+
+    }
+
+    .navbar li a {
+        padding: 3px 3px;
+        text-decoration: none;
+        color: white;
+    }
+
+    .navbar li a:hover {
+        color: red
+    }
+
+    .search {
+        float: right;
+        color: white;
+        padding: 12px 75px;
+    }
+
+    .navbar input {
+        border: 2px solid black;
+        border-radius: 14px;
+        padding: 3px 17px;
+        width: 129px;
+    }
+
+    .go {
+        border-radius: 14px;
+    }
+
+    #myChart {
+        padding-left: 10px;
+    }
+</style>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact us</a></li>
+                <div class="search">
+                    <input type="text" name="search" id="search" placeholder="Search this share">
+                    <button class="go" onclick="searchStocks()">go</button>
+                </div>
+
+            </ul>
+        </nav>
+    </header>
+
+    <canvas id="myChart" width="200" height="80"></canvas>
+    <script>
+        async function searchStocks(){
+            let inputValue = document.getElementById("search").value
+            document.getElementById( "myChart" ).remove();     
+            let canvas = document.createElement('canvas');     
+            canvas.setAttribute('id','myChart');    
+            canvas.setAttribute('width','200');     
+            canvas.setAttribute('height','80');
+            document.querySelector('body').appendChild(canvas);
+            getchart(inputValue)
+        }
+        const shareName = [];
+        getchart();
+
+        async function getchart(param="ACC") {
+            console.log(param)
+            let stockName = param.toUpperCase()
+            let result = await getdata();
+            console.log(date);
+            var ctx = document.getElementById('myChart').getContext('2d');
+            if(myChart){
+
+                // myChart.clear();
+            }
+            console.log(myChart)
+             myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: result["short"],
+                    datasets: [{
+                        label: stockName,
+                        data: result[stockName],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+
+        const date = {};
+        async function getdata() {
+            const response = await fetch('pcrw.csv');
+            
+            let data = await response.text();
+            
+            data = data.replace("\r",'')
+            const table = data.split('\n');
+            console.log(table)
+            const date1 = table[0];
+            
+
+            const date2 = date1.split(',');
+            let dataFormat = {}
+            for(var key in table){
+                
+                tableData = table[key].split(",")
+                console.log(tableData[tableData.length-1])
+                // tableData = tableData[tableData.length-1].replace("/r","")
+                if(!dataFormat[tableData[0]]){
+                    dataFormat[tableData[0]] = []
+                }
+                
+                dataFormat[tableData[0]]  = tableData.slice(1)
+                // for(var keyData in dataFormat[key]){
+                //     dataFormat[tableData[0]].push(tableData)
+                // }
+            }
+            console.log(dataFormat);
+            date2.splice(0, 1);
+            
+            return dataFormat;
+
+
+
+
+            // const table1 = table[0];
+            // // console.log(table1);
+
+            // // table1.forEach( row => {
+            // //     const column = row.split(',');
+            // //     console.log(column);
+            // // })
+
+            // table.forEach(row => {
+            //     const columns = row.split(',');
+            //     // console.log(columns);
+            //     shareName.push(columns);
+
+            //     // console.log(row);
+            //     // return 1;
+            // })
+            
+        };
+            // console.log(shareName);
+            // console.log(row);
+
+
+
+    </script>
+</body>
+
+</html>
